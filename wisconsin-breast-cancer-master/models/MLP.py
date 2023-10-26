@@ -58,12 +58,10 @@ class MLP:
 
             with tf.name_scope("input"):
                 # [BATCH_SIZE, NUM_FEATURES]
-                x_input = tf.placeholder(
-                    dtype=tf.float32, shape=[None, self.num_features], name="x_input"
-                )
+                x_input = tf.keras.Input(shape=(self.num_features,), dtype=tf.float32, name="x_input")
 
                 # [BATCH_SIZE]
-                y_input = tf.placeholder(dtype=tf.uint8, shape=[None], name="y_input")
+                y_input = tf.keras.Input(shape=(), dtype=tf.uint8, name="y_input")
 
                 # [BATCH_SIZE, NUM_CLASSES]
                 y_onehot = tf.one_hot(
