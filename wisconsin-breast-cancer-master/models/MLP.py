@@ -110,18 +110,19 @@ class MLP:
             for test_batch in test_dataset:
                 self.test_step(test_batch)
 
-            template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
+            template = 'Epoch {}, Loss: {:.4f}, Accuracy: {:.2f}%, Test Loss: {:.4f}, Test Accuracy: {:.2f}%'
             print(template.format(epoch + 1,
-                                  self.train_loss_metric.result(),
-                                  self.train_accuracy_metric.result() * 100,
-                                  self.test_loss_metric.result(),
-                                  self.test_accuracy_metric.result() * 100))
-    
+                                  self.train_loss_metric.result().numpy(),
+                                  self.train_accuracy_metric.result().numpy() * 100,
+                                  self.test_loss_metric.result().numpy(),
+                                  self.test_accuracy_metric.result().numpy() * 100))
+
             # Reset the metrics for the next epoch
             self.train_loss_metric.reset_states()
             self.train_accuracy_metric.reset_states()
             self.test_loss_metric.reset_states()
             self.test_accuracy_metric.reset_states()
+
 
     def save_labels(self, predictions, actual, result_path, phase, step):
         """Saves the actual and predicted labels to a NPY file
