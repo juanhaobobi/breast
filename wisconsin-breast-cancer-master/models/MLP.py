@@ -133,9 +133,7 @@ class MLP:
                 )
             tf.summary.scalar("loss", loss)
 
-            optimizer_op = tf.train.GradientDescentOptimizer(
-                learning_rate=learning_rate
-            ).minimize(loss)
+            optimizer_op = tf.keras.optimizers.SGD(learning_rate=learning_rate).minimize(loss)
 
             with tf.name_scope("accuracy"):
                 predicted_class = tf.nn.softmax(output_layer)
