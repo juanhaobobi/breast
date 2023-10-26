@@ -302,7 +302,7 @@ class MLP:
         The created `tf.get_variable` for weights.
         """
         initial_value = tf.random.normal(shape=shape, stddev=0.01)
-        return tf.get_variable(name=name, initializer=initial_value)
+        return tf.Variable(initial_value, name=name)
 
     @staticmethod
     def bias_variable(name, shape):
@@ -318,7 +318,7 @@ class MLP:
         The created `tf.get_variable` for biases.
         """
         initial_value = tf.constant([0.1], shape=shape)
-        return tf.get_variable(name=name, initializer=initial_value)
+        return tf.Variable(initial_value, name=name)
 
     @staticmethod
     def variable_summaries(var):
