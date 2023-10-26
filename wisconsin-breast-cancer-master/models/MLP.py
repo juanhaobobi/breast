@@ -72,7 +72,7 @@ class MLP:
                     name="y_onehot",
                 )
 
-            learning_rate = tf.placeholder(dtype=tf.float32, name="learning_rate")
+            learning_rate = tf.keras.Input(shape=(), dtype=tf.float32, name="learning_rate")
 
             first_hidden_layer = {
                 "weights": self.weight_variable(
