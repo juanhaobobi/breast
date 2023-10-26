@@ -301,7 +301,7 @@ class MLP:
         -------
         The created `tf.get_variable` for weights.
         """
-        initial_value = tf.random_normal(shape=shape, stddev=0.01)
+        initial_value = tf.random.normal(shape=shape, stddev=0.01)
         return tf.get_variable(name=name, initializer=initial_value)
 
     @staticmethod
