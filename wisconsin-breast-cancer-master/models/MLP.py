@@ -58,10 +58,12 @@ class MLP:
 
             with tf.name_scope("input"):
                 # [BATCH_SIZE, NUM_FEATURES]
-                x_input = tf.keras.Input(shape=(self.num_features,), dtype=tf.float32, name="x_input")
+                x_input = tf.placeholder(
+                    dtype=tf.float32, shape=[None, self.num_features], name="x_input"
+                )
 
                 # [BATCH_SIZE]
-                y_input = tf.keras.Input(shape=(), dtype=tf.uint8, name="y_input")
+                y_input = tf.placeholder(dtype=tf.uint8, shape=[None], name="y_input")
 
                 # [BATCH_SIZE, NUM_CLASSES]
                 y_onehot = tf.one_hot(
@@ -72,7 +74,7 @@ class MLP:
                     name="y_onehot",
                 )
 
-            learning_rate = tf.keras.Input(shape=(), dtype=tf.float32, name="learning_rate")
+            learning_rate = tf.placeholder(dtype=tf.float32, name="learning_rate")
 
             first_hidden_layer = {
                 "weights": self.weight_variable(
@@ -133,7 +135,9 @@ class MLP:
                 )
             tf.summary.scalar("loss", loss)
 
-            optimizer_op = tf.keras.optimizers.SGD(learning_rate=learning_rate).minimize(loss)
+            optimizer_op = tf.train.GradientDescentOptimizer(
+                learning_rate=learning_rate
+            ).minimize(loss)
 
             with tf.name_scope("accuracy"):
                 predicted_class = tf.nn.softmax(output_layer)
@@ -299,8 +303,8 @@ class MLP:
         -------
         The created `tf.get_variable` for weights.
         """
-        initial_value = tf.random.normal(shape=shape, stddev=0.01)
-        return tf.Variable(initial_value, name=name)
+        initial_value = tf.random_normal(shape=shape, stddev=0.01)
+        return tf.get_variable(name=name, initializer=initial_value)
 
     @staticmethod
     def bias_variable(name, shape):
@@ -316,7 +320,7 @@ class MLP:
         The created `tf.get_variable` for biases.
         """
         initial_value = tf.constant([0.1], shape=shape)
-        return tf.Variable(initial_value, name=name)
+        return tf.get_variable(name=name, initializer=initial_value)
 
     @staticmethod
     def variable_summaries(var):
